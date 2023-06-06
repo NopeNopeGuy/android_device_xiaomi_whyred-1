@@ -1,19 +1,25 @@
-type vendor_power_prop, property_type;
-
 allow hal_power_default sysfs_touchpanel:dir search;
 allow hal_power_default sysfs_touchpanel:file rw_file_perms;
+typeattribute hal_power_default mlstrustedsubject;
 
 # To do powerhint on nodes defined in powerhint.json
 allow hal_power_default cgroup:dir search;
 allow hal_power_default cgroup:file rw_file_perms;
-allow hal_power_default self:capability sys_admin;
+allow hal_power_default proc_sched_boost:file rw_file_perms;
 allow hal_power_default sysfs_devices_system_cpu:file rw_file_perms;
+allow hal_power_default device_latency:chr_file rw_file_perms;
 allow hal_power_default sysfs_devfreq:dir search;
 allow hal_power_default sysfs_devfreq:file rw_file_perms;
 allow hal_power_default sysfs_devfreq:lnk_file rw_file_perms;
-allow hal_power_default sysfs_graphics:file rw_file_perms;
 allow hal_power_default sysfs_kgsl:file rw_file_perms;
-allow hal_power_default sysfs_kgsl:lnk_file rw_file_perms;
+allow hal_power_default sysfs_graphics:file r_file_perms;
+
+# Set scheduling info for apps (for adpf)
+allow hal_power_default appdomain:process { getsched setsched };
+allow hal_power_default self:capability sys_nice;
+
+# Set scheduling info for system_server (for adpf)
+allow hal_power_default system_server:process setsched;
 
 # To get/set powerhal state property
 set_prop(hal_power_default, vendor_power_prop)
