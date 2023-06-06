@@ -1,1 +1,2 @@
-dontaudit init { bt_firmware_file }:filesystem getattr;
+allow init iorapd_data_file:file getattr;
+allow init proc:file setattr;
